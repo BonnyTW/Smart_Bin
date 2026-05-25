@@ -61,6 +61,8 @@ The SmartBin simulated hardware model uses an ESP32 as the central controller wi
 | **Buzzer (Alarm)** | Signal: `GPIO14` | PWM | Triggers audible alert if a user approaches a critical-status bin. |
 | **Exhaust Fan Driver** | Signal: `GPIO15` | Digital | Activates exhaust fan to vent bad odors and excess heat. |
 
+<img width="1118" height="697" alt="image" src="https://github.com/user-attachments/assets/cda83e1e-e4eb-4cda-bad3-36e4e76e2bbc" />
+
 ### ⚡ Dual-Rail Simulated Power Setup
 Motor noise and high currents from servo movements can lead to voltage drops, causing ESP32 micro-controllers to brown out or reset. SmartBin implements a dual-rail power circuit in the simulator:
 1. **5V Rail (Logic & Sensors):** A simulated buck converter steps down battery voltage to a stable 5V for the ESP32, both Ultrasonic sensors, and the servos. De-coupling capacitors (`470µF cBuck`, `10µF cEsp`, and `100µF cServo`) are placed between the rails to absorb motor surges.
