@@ -1,0 +1,5 @@
+# Wokwi Library List
+ESP32Servo
+ArduinoJson
+DHT sensor library
+Adafruit Unified Sensor

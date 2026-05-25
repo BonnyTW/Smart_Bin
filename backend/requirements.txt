@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+asyncpg
+python-dotenv
+pydantic
+python-jose[cryptography]
+bcrypt>=4.0.1
+apscheduler
+websockets
+email-validator
+python-multipart

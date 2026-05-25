@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "author": "SmartBin",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-text", "id": "title", "top": 0, "left": 480, "attrs": { "text": "Smart Waste Bin", "color": "cyan" } },
+
+    { "type": "wokwi-text", "id": "zonePower", "top": 24, "left": 24, "attrs": { "text": "① POWER: Battery → Buck 5V", "color": "red" } },
+    { "type": "wokwi-battery-aa", "id": "bat", "top": 56, "left": 24, "attrs": { "count": "4", "label": "Battery +" } },
+    { "type": "wokwi-text", "id": "batMinus", "top": 120, "left": 24, "attrs": { "text": "Battery − → GND", "color": "gray" } },
+    { "type": "wokwi-text", "id": "lblBuck", "top": 56, "left": 180, "attrs": { "text": "Buck 5V OUT", "color": "green" } },
+    { "type": "wokwi-capacitor", "id": "cBuck", "top": 96, "left": 180, "attrs": { "capacitance": "470uF", "label": "470µF" } },
+    { "type": "wokwi-capacitor", "id": "cEsp", "top": 156, "left": 180, "attrs": { "capacitance": "10uF", "label": "10µF ESP" } },
+    { "type": "wokwi-capacitor", "id": "cServo", "top": 216, "left": 180, "attrs": { "capacitance": "100uF", "label": "100µF Servo" } },
+
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 80, "left": 400, "attrs": {} },
+
+    { "type": "wokwi-hc-sr04", "id": "sonic1", "top": 24, "left": 720, "attrs": { "label": "Fill level" } },
+    { "type": "wokwi-hc-sr04", "id": "sonic2", "top": 24, "left": 900, "attrs": { "label": "Approach → Lid" } },
+    { "type": "wokwi-dht22", "id": "dht", "top": 24, "left": 1080, "attrs": { "label": "DHT22" } },
+
+    { "type": "wokwi-servo", "id": "servoLid", "top": 100, "left": 200, "attrs": { "label": "Lid (ultrasonic)" } },
+    { "type": "wokwi-servo", "id": "servoSort", "top": 220, "left": 200, "attrs": { "label": "Sort (moisture)" } },
+
+    { "type": "wokwi-potentiometer", "id": "gasPot", "top": 320, "left": 720, "attrs": { "label": "IR Gas" } },
+    { "type": "wokwi-potentiometer", "id": "moistPot", "top": 320, "left": 900, "attrs": { "label": "Moisture → Sort" } },
+
+    { "type": "wokwi-led", "id": "ledG", "top": 360, "left": 400, "attrs": { "color": "green", "label": "OK" } },
+    { "type": "wokwi-led", "id": "ledY", "top": 360, "left": 460, "attrs": { "color": "yellow", "label": "Warn" } },
+    { "type": "wokwi-led", "id": "ledR", "top": 360, "left": 520, "attrs": { "color": "red", "label": "Full" } },
+    { "type": "wokwi-buzzer", "id": "buzzer", "top": 280, "left": 640, "attrs": { "label": "Buzzer" } },
+
+    { "type": "wokwi-text", "id": "zoneFan", "top": 440, "left": 720, "attrs": { "text": "② FAN: Boost → Motor + GPIO15", "color": "orange" } },
+    { "type": "wokwi-dc-motor", "id": "fan", "top": 480, "left": 1080, "attrs": { "label": "DC Fan" } },
+    { "type": "wokwi-diode", "id": "dFlyback", "top": 540, "left": 1080, "attrs": { "label": "Flyback" } },
+    { "type": "wokwi-npn-transistor", "id": "qFan", "top": 500, "left": 900, "attrs": { "label": "Driver" } },
+    { "type": "wokwi-resistor", "id": "rGate", "top": 500, "left": 760, "attrs": { "value": "1000" } },
+    { "type": "wokwi-led", "id": "ledFan", "top": 480, "left": 640, "attrs": { "color": "blue", "label": "Fan ON" } }
+  ],
+  "connections": [
+    ["bat:+", "esp:5V", "red", ["h0", "h30", "h60", "h90", "h120"]],
+    ["bat:-", "esp:GND.1", "black", ["h0", "h30", "h60"]],
+    ["bat:-", "esp:GND.2", "black", ["h0"]],
+    ["bat:-", "qFan:E", "black", ["v0"]],
+
+    ["cBuck:1", "esp:5V", "red", ["v0"]],
+    ["cBuck:2", "esp:GND.1", "black", ["v0"]],
+    ["cEsp:1", "esp:5V", "red", ["v0"]],
+    ["cEsp:2", "esp:GND.1", "black", ["v0"]],
+    ["cServo:1", "esp:5V", "red", ["v0"]],
+    ["cServo:2", "esp:GND.2", "black", ["v0"]],
+
+    ["esp:5", "sonic1:TRIG", "green", ["v0"]],
+    ["esp:18", "sonic1:ECHO", "blue", ["v0"]],
+    ["esp:GND.1", "sonic1:GND", "black", ["v0"]],
+    ["esp:5V", "sonic1:VCC", "red", ["v0"]],
+
+    ["esp:19", "sonic2:TRIG", "green", ["v0"]],
+    ["esp:21", "sonic2:ECHO", "blue", ["v0"]],
+    ["esp:GND.1", "sonic2:GND", "black", ["v0"]],
+    ["esp:5V", "sonic2:VCC", "red", ["v0"]],
+
+    ["esp:4", "dht:SDA", "green", ["v0"]],
+    ["esp:3V3", "dht:VCC", "red", ["v0"]],
+    ["esp:GND.1", "dht:GND", "black", ["v0"]],
+
+    ["esp:34", "gasPot:SIG", "orange", ["v0"]],
+    ["esp:3V3", "gasPot:VCC", "red", ["v0"]],
+    ["esp:GND.2", "gasPot:GND", "black", ["v0"]],
+
+    ["esp:35", "moistPot:SIG", "brown", ["v0"]],
+    ["esp:3V3", "moistPot:VCC", "red", ["v0"]],
+    ["esp:GND.2", "moistPot:GND", "black", ["v0"]],
+
+    ["esp:13", "servoLid:PWM", "orange", ["v0"]],
+    ["esp:5V", "servoLid:V+", "red", ["v0"]],
+    ["esp:GND.2", "servoLid:GND", "black", ["v0"]],
+
+    ["esp:12", "servoSort:PWM", "orange", ["v0"]],
+    ["esp:5V", "servoSort:V+", "red", ["v0"]],
+    ["esp:GND.2", "servoSort:GND", "black", ["v0"]],
+
+    ["esp:25", "ledG:A", "green", ["v0"]],
+    ["esp:GND.2", "ledG:C", "black", ["v0"]],
+    ["esp:26", "ledY:A", "yellow", ["v0"]],
+    ["esp:GND.2", "ledY:C", "black", ["v0"]],
+    ["esp:27", "ledR:A", "red", ["v0"]],
+    ["esp:GND.2", "ledR:C", "black", ["v0"]],
+
+    ["esp:14", "buzzer:1", "purple", ["v0"]],
+    ["esp:GND.2", "buzzer:2", "black", ["v0"]],
+
+    ["bat:+", "fan:1", "orange", ["h0", "h50", "h100", "h150", "h200"]],
+    ["fan:2", "qFan:C", "blue", ["v0"]],
+    ["esp:15", "rGate:1", "yellow", ["v0"]],
+    ["rGate:2", "qFan:B", "yellow", ["v0"]],
+    ["esp:15", "ledFan:A", "blue", ["v0"]],
+    ["esp:GND.2", "ledFan:C", "black", ["v0"]],
+    ["dFlyback:C", "fan:1", "red", ["v0"]],
+    ["dFlyback:A", "fan:2", "red", ["v0"]]
+  ],
+  "dependencies": {},
+  "serialMonitor": {
+    "display": "always",
+    "collapse": false,
+    "newline": "lf"
+  }
+}
