@@ -1,4 +1,4 @@
-# 🗑️ SmartBin — IoT Real-Time Waste Management System
+# 🗑️ SmartBin — IoT Real-Time Waste Management System 
 
 SmartBin is an enterprise-grade, end-to-end Internet of Things (IoT) waste management solution. The system leverages an ESP32 micro-controller (simulated on Wokwi) to perform edge-level sensing and actuation, connected to a robust, high-performance FastAPI Python backend and a beautiful, real-time React + TypeScript dashboard.
 
